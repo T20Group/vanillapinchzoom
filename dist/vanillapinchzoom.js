@@ -222,11 +222,14 @@ VanillaPinchZoom.prototype = {
     minZoom: 0.5,
     lockDragAxis: false,
     use2d: true,
+    updateAllElementStyles: false,
     zoomStartEventName: 'pz_zoomstart',
     zoomEndEventName: 'pz_zoomend',
     dragStartEventName: 'pz_dragstart',
     dragEndEventName: 'pz_dragend',
-    doubleTapEventName: 'pz_doubletap'
+    doubleTapEventName: 'pz_doubletap',
+    zoomInEventName: 'pz_zoomin',
+		zoomOutEventName: 'pz_zoomout'
   },
 
   /**
@@ -265,6 +268,7 @@ VanillaPinchZoom.prototype = {
    */
   handleZoomStart: function (event) {
     this.el.dispatchEvent(createEvent(this.options.zoomStartEventName));
+    this.el.dispatchEvent(createEvent(this.options.zoomInEventName, this.zoomFactor));
     this.stopAnimation();
     this.lastScale = 1;
     this.nthZoom = 0;
@@ -319,6 +323,12 @@ VanillaPinchZoom.prototype = {
 
     this.animate(this.options.animationDuration, this.options.animationInterval, updateProgress, this.swing);
     this.el.dispatchEvent(createEvent(this.options.doubleTapEventName));
+
+    if (startZoomFactor > zoomFactor) {
+			this.el.dispatchEvent(createEvent(this.options.zoomOutEventName, this.zoomFactor));
+		} else {
+			this.el.dispatchEvent(createEvent(this.options.zoomInEventName, this.zoomFactor));
+		}
   },
 
   /**
@@ -438,6 +448,7 @@ VanillaPinchZoom.prototype = {
 
   sanitize: function () {
     if (this.zoomFactor < this.options.zoomOutFactor) {
+      this.el.dispatchEvent(createEvent('pz_zoomout', this.zoomFactor));
       this.zoomOutAnimation();
     } else if (this.isInsaneOffset(this.offset)) {
       this.sanitizeOffsetAnimation();
@@ -690,6 +701,7 @@ VanillaPinchZoom.prototype = {
    * Updates the css values according to the current zoom factor and offset
    */
   update: function () {
+    var elStyles = {};
     if (this.updatePlaned) {
       return;
     }
@@ -713,6 +725,17 @@ VanillaPinchZoom.prototype = {
           }
         }).bind(this);
 
+      if (this.options.updateAllElementStyles) {
+				assign(elStyles, {
+					'webkitTransformOrigin': '0% 0%',
+					'mozTransformOrigin': '0% 0%',
+					'msTransformOrigin': '0% 0%',
+					'oTransformOrigin': '0% 0%',
+					'transformOrigin': '0% 0%',
+					'position': 'absolute'
+				});
+			}
+
       // Scale 3d and translate3d are faster (at least on ios)
       // but they also reduce the quality.
       // PinchZoom uses the 3d transformations during interactions
@@ -720,13 +743,14 @@ VanillaPinchZoom.prototype = {
       if (!this.options.use2d || this.hasInteraction || this.inAnimation) {
         this.is3d = true;
         removeClone();
-        applyStyles(this.el, {
-          'webkitTransform':  transform3d,
-          'oTransform':       transform2d,
-          'msTransform':      transform2d,
-          'mozTransform':     transform2d,
-          'transform':        transform3d
-        });
+        assign(elStyles, {
+					'webkitTransform':  transform3d,
+					'oTransform':       transform2d,
+					'msTransform':      transform2d,
+					'mozTransform':     transform2d,
+					'transform':        transform3d
+				});
+	      applyStyles(this.el, elStyles);
       } else {
         // When changing from 3d to 2d transform webkit has some glitches.
         // To avoid this, a copy of the 3d transformed element is displayed in the
@@ -737,13 +761,14 @@ VanillaPinchZoom.prototype = {
           this.container.appendChild(this.clone);
           setTimeout(removeClone, 200);
         }
-        applyStyles(this.el, {
-          'webkit-transform':  transform2d,
-          'oTransform':       transform2d,
-          'msTransform':      transform2d,
-          'mozTransform':     transform2d,
-          'transform':        transform2d
-        });
+        assign(elStyles, {
+					'webkit-transform':  transform2d,
+					'oTransform':       transform2d,
+					'msTransform':      transform2d,
+					'mozTransform':     transform2d,
+					'transform':        transform2d
+				});
+        applyStyles(this.el, elStyles);
         this.is3d = false;
       }
     }).bind(this), 0);

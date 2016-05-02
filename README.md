@@ -21,12 +21,13 @@ var myVanillaPinchZoom = new VanillaPinchZoom(document.querySelector('#your-elem
 
 ```Text
 
-tapZoomFactor:      The zoom factor a double tap zooms to. (default 2)
-zoomOutFactor:      Resizes to original size when zoom factor is below the configured value. (default 1.3)
-animationDuration:  The animation duration in milliseconds. (default 300)
-maxZoom:            The maximum zoom factor. (default 4)
-minZoom:            The minimum zoom factor. (default 0.5)
-lockDragAxis        Locks panning of the element to a single axis. (default false)
+tapZoomFactor:          The zoom factor a double tap zooms to. (default 2)
+zoomOutFactor:          Resizes to original size when zoom factor is below the configured value. (default 1.3)
+animationDuration:      The animation duration in milliseconds. (default 300)
+maxZoom:                The maximum zoom factor. (default 4)
+minZoom:                The minimum zoom factor. (default 0.5)
+lockDragAxis            Locks panning of the element to a single axis. (default false)
+updateAllElementStyles  Update all styles on element. (default false)
 
 ```
 
@@ -38,6 +39,8 @@ Pinchzoom emits some custom events you can listen to
 
 pz_zoomstart  Started to zoom
 pz_zoomend    Stopped zooming
+pz_zoomin     Zoom in occurred with either zoomstart or doubletap
+pz_zoomout    Zoom out occurred with either zoomend or doubletap 
 pz_dragstart  Started to drag the element
 pz_dragend    Stopped to drag the element
 pz_doubletap  Resetting the zoom with doubletab
