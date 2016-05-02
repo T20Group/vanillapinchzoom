@@ -229,7 +229,7 @@ VanillaPinchZoom.prototype = {
     dragEndEventName: 'pz_dragend',
     doubleTapEventName: 'pz_doubletap',
     zoomInEventName: 'pz_zoomin',
-		zoomOutEventName: 'pz_zoomout'
+    zoomOutEventName: 'pz_zoomout'
   },
 
   /**
@@ -325,10 +325,10 @@ VanillaPinchZoom.prototype = {
     this.el.dispatchEvent(createEvent(this.options.doubleTapEventName));
 
     if (startZoomFactor > zoomFactor) {
-			this.el.dispatchEvent(createEvent(this.options.zoomOutEventName, this.zoomFactor));
-		} else {
-			this.el.dispatchEvent(createEvent(this.options.zoomInEventName, this.zoomFactor));
-		}
+      this.el.dispatchEvent(createEvent(this.options.zoomOutEventName, this.zoomFactor));
+    } else {
+      this.el.dispatchEvent(createEvent(this.options.zoomInEventName, this.zoomFactor));
+    }
   },
 
   /**
@@ -726,15 +726,15 @@ VanillaPinchZoom.prototype = {
         }).bind(this);
 
       if (this.options.updateAllElementStyles) {
-				assign(elStyles, {
-					'webkitTransformOrigin': '0% 0%',
-					'mozTransformOrigin': '0% 0%',
-					'msTransformOrigin': '0% 0%',
-					'oTransformOrigin': '0% 0%',
-					'transformOrigin': '0% 0%',
-					'position': 'absolute'
-				});
-			}
+        assign(elStyles, {
+          'webkitTransformOrigin': '0% 0%',
+          'mozTransformOrigin': '0% 0%',
+          'msTransformOrigin': '0% 0%',
+          'oTransformOrigin': '0% 0%',
+          'transformOrigin': '0% 0%',
+          'position': 'absolute'
+	});
+      }
 
       // Scale 3d and translate3d are faster (at least on ios)
       // but they also reduce the quality.
@@ -744,13 +744,13 @@ VanillaPinchZoom.prototype = {
         this.is3d = true;
         removeClone();
         assign(elStyles, {
-					'webkitTransform':  transform3d,
-					'oTransform':       transform2d,
-					'msTransform':      transform2d,
-					'mozTransform':     transform2d,
-					'transform':        transform3d
-				});
-	      applyStyles(this.el, elStyles);
+          'webkitTransform':  transform3d,
+          'oTransform':       transform2d,
+          'msTransform':      transform2d,
+          'mozTransform':     transform2d,
+          'transform':        transform3d
+        });
+        applyStyles(this.el, elStyles);
       } else {
         // When changing from 3d to 2d transform webkit has some glitches.
         // To avoid this, a copy of the 3d transformed element is displayed in the
