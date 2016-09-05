@@ -183,6 +183,11 @@ function VanillaPinchZoom(el, options) {
   this.enable();
 };
 
+var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+VanillaPinchZoom.iOS = function() {
+  return iOS
+}
+
 VanillaPinchZoom.prototype = {
   defaults: {
     tapZoomFactor: 2,
@@ -193,6 +198,7 @@ VanillaPinchZoom.prototype = {
     minZoom: 0.5,
     lockDragAxis: false,
     use2d: true,
+    fix3dTo2dGlitch: iOS,
     updateAllElementStyles: false,
     zoomStartEventName: 'pz_zoomstart',
     zoomEndEventName: 'pz_zoomend',
@@ -704,7 +710,7 @@ VanillaPinchZoom.prototype = {
           'oTransformOrigin': '0% 0%',
           'transformOrigin': '0% 0%',
           'position': 'absolute'
-	});
+        });
       }
 
       // Scale 3d and translate3d are faster (at least on ios)
@@ -726,19 +732,19 @@ VanillaPinchZoom.prototype = {
         // When changing from 3d to 2d transform webkit has some glitches.
         // To avoid this, a copy of the 3d transformed element is displayed in the
         // foreground while the element is converted from 3d to 2d transform
-        if (this.is3d) {
+        if (this.options.fix3dTo2dGlitch && this.is3d) {
           this.clone = this.el.cloneNode(true);
           this.clone.style.pointerEvents = 'none';
           this.container.appendChild(this.clone);
           setTimeout(removeClone, 200);
         }
         assign(elStyles, {
-					'webkit-transform':  transform2d,
-					'oTransform':       transform2d,
-					'msTransform':      transform2d,
-					'mozTransform':     transform2d,
-					'transform':        transform2d
-				});
+          'webkit-transform':  transform2d,
+          'oTransform':       transform2d,
+          'msTransform':      transform2d,
+          'mozTransform':     transform2d,
+          'transform':        transform2d
+        });
         applyStyles(this.el, elStyles);
         this.is3d = false;
       }

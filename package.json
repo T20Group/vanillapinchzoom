@@ -16,10 +16,32 @@
     "zoom",
     "pinchzoom"
   ],
-  "author": {
-    "name": "Selby Walker",
-    "email": "selby.e.walker@gmail.com"
-  },
+  "contributors": [
+    {
+      "name": "Rhys Burnie",
+      "note": "Forked due to the fact that the history so far has been flakey, don't want to risk it dissapearing from npm like other versions have"
+    },
+    {
+      "name": "Laura Kuhner",
+      "url": "https://github.com/dxeware"
+    },
+    {
+      "name": "Selby Walker",
+      "email": "selby.e.walker@gmail.com",
+      "note": "forked from vanillapinch"
+    },
+    {
+      "name": "Jordan Gensler",
+      "url": "https://www.npmjs.com/package/vanillapinch",
+      "note": "apparently made the original native fork based on the jQuery plugin? hard to track, history missing"
+    },
+    {
+      "name": "Manuel Stofer",
+      "email": "manuel@smallpdf.com",
+      "url": "https://github.com/manuelstofer/pinchzoom",
+      "note": "created jQuery plugin"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "object-assign": "^2.0.0"
