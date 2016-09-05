@@ -1,7 +1,7 @@
 {
   "name": "vanillapinchzoom",
-  "version": "0.0.0",
-  "description": "A fork of RTP Pinch Zoom without jQuery.",
+  "version": "1.0.0",
+  "description": "A fork of, a fork of, a fork of RTP Pinch Zoom without jQuery.",
   "main": "src/index.js",
   "scripts": {
     "build": "npm run browserify && npm run min",
